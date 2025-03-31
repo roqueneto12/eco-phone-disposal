@@ -23,16 +23,16 @@ const Index = () => {
                     Descarte Sustentável
                   </div>
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-eco-dark">
-                    Descarte Seu Celular de Forma Sustentável
+                    Descarte Seus Eletrônicos de Forma Sustentável
                   </h1>
                   <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl">
-                    Evite impactos ambientais! Cadastre seu celular e encontre o ponto de coleta mais próximo.
+                    Evite impactos ambientais! Cadastre seus dispositivos eletrônicos e encontre o ponto de coleta mais próximo.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button asChild size="lg" className="bg-eco-green hover:bg-eco-green/90 text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px]">
                       <Link to="/register">
                         <Smartphone className="mr-2 h-5 w-5" />
-                        Cadastrar Celular
+                        Cadastrar Dispositivo
                       </Link>
                     </Button>
                     <Button asChild variant="outline" size="lg" className="border-eco-green text-eco-dark hover:bg-eco-green/10 shadow-sm transition-all duration-300 hover:shadow-md">
@@ -66,7 +66,7 @@ const Index = () => {
                         <div className="w-10 h-10 rounded-full bg-eco-green/20 flex items-center justify-center">
                           <span className="text-eco-green font-semibold">1</span>
                         </div>
-                        <p className="text-sm">Cadastre seu aparelho</p>
+                        <p className="text-sm">Cadastre seu dispositivo</p>
                       </div>
                       <div className="glass-card p-4 flex items-center space-x-4">
                         <div className="w-10 h-10 rounded-full bg-eco-green/20 flex items-center justify-center">
@@ -92,7 +92,7 @@ const Index = () => {
         <section className="py-16 bg-eco-light">
           <div className="container mx-auto px-4 max-w-7xl">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Por que reciclar celulares?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Por que reciclar dispositivos eletrônicos?</h2>
               <p className="text-muted-foreground max-w-3xl mx-auto">
                 O descarte correto de dispositivos eletrônicos é crucial para preservação do meio ambiente e da saúde pública.
               </p>
