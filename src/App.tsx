@@ -9,6 +9,7 @@ import NavigationBar from "./components/NavigationBar";
 import Index from "./pages/Index";
 import Register from "./pages/Register";
 import Map from "./pages/Map";
+import Dashboard from "./pages/Dashboard";
 import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
 
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/register" element={<Register />} />
             <Route path="/map" element={<Map />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
