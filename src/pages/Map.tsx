@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, MapPin, Clock, Phone, ExternalLink } from 'lucide-react';
+import { Search, Filter, MapPin, Clock, Phone, ExternalLink, Smartphone, Tv, Laptop, Cpu } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +22,8 @@ const COLLECTION_POINTS = [
     address: "Av. Paulista, 1000, São Paulo - SP",
     hours: "Seg-Sex: 9h às 18h, Sáb: 9h às 13h",
     phone: "(11) 3456-7890",
-    distance: "1.2 km"
+    distance: "1.2 km",
+    accepts: ["smartphone", "tv", "computer", "other"]
   },
   {
     id: 2,
@@ -31,7 +32,8 @@ const COLLECTION_POINTS = [
     address: "Rua Augusta, 2500, São Paulo - SP",
     hours: "Seg-Sáb: 10h às 22h, Dom: 12h às 20h",
     phone: "(11) 2345-6789",
-    distance: "2.5 km"
+    distance: "2.5 km",
+    accepts: ["smartphone"]
   },
   {
     id: 3,
@@ -40,7 +42,8 @@ const COLLECTION_POINTS = [
     address: "Rua Oscar Freire, 500, São Paulo - SP",
     hours: "Seg-Sex: 8h às 17h",
     phone: "(11) 4567-8901",
-    distance: "3.8 km"
+    distance: "3.8 km",
+    accepts: ["smartphone", "computer", "other"]
   },
   {
     id: 4,
@@ -49,7 +52,8 @@ const COLLECTION_POINTS = [
     address: "Av. Brigadeiro Faria Lima, 3000, São Paulo - SP",
     hours: "Seg-Sáb: 9h às 21h",
     phone: "(11) 5678-9012",
-    distance: "4.1 km"
+    distance: "4.1 km",
+    accepts: ["smartphone"]
   },
   {
     id: 5,
@@ -58,7 +62,8 @@ const COLLECTION_POINTS = [
     address: "Av. Rebouças, 1200, São Paulo - SP",
     hours: "Seg-Sex: 8h às 18h, Sáb: 9h às 14h",
     phone: "(11) 6789-0123",
-    distance: "5.3 km"
+    distance: "5.3 km",
+    accepts: ["smartphone", "tv", "computer", "other"]
   }
 ];
 
@@ -88,16 +93,48 @@ const getTypeColor = (type: string) => {
   }
 };
 
+const getDeviceIcon = (deviceType: string) => {
+  switch (deviceType) {
+    case 'smartphone':
+      return <Smartphone className="h-4 w-4" />;
+    case 'tv':
+      return <Tv className="h-4 w-4" />;
+    case 'computer':
+      return <Laptop className="h-4 w-4" />;
+    case 'other':
+      return <Cpu className="h-4 w-4" />;
+    default:
+      return null;
+  }
+};
+
+const getDeviceLabel = (deviceType: string) => {
+  switch (deviceType) {
+    case 'smartphone':
+      return 'Smartphones';
+    case 'tv':
+      return 'TVs';
+    case 'computer':
+      return 'Computadores';
+    case 'other':
+      return 'Outros dispositivos';
+    default:
+      return '';
+  }
+};
+
 const Map = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState('all');
+  const [deviceFilter, setDeviceFilter] = useState('all');
   const [selectedPoint, setSelectedPoint] = useState<typeof COLLECTION_POINTS[0] | null>(null);
   
   const filteredPoints = COLLECTION_POINTS.filter(point => {
     const matchesFilter = filter === 'all' || point.type === filter;
+    const matchesDeviceFilter = deviceFilter === 'all' || point.accepts.includes(deviceFilter);
     const matchesSearch = point.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           point.address.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesFilter && matchesSearch;
+    return matchesFilter && matchesSearch && matchesDeviceFilter;
   });
 
   return (
@@ -114,7 +151,7 @@ const Map = () => {
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-4">Encontre um Ponto de Coleta</h1>
           <p className="text-muted-foreground max-w-2xl">
-            Veja os locais mais próximos para descartar seu celular corretamente. Utilize os filtros para refinar sua busca.
+            Veja os locais mais próximos para descartar seu dispositivo eletrônico corretamente. Utilize os filtros para refinar sua busca.
           </p>
         </motion.div>
 
@@ -143,8 +180,27 @@ const Map = () => {
 
                 <div className="space-y-2">
                   <div className="flex items-center">
+                    <Cpu className="w-5 h-5 text-muted-foreground mr-2" />
+                    <span className="font-medium">Filtrar por dispositivo</span>
+                  </div>
+                  <Select value={deviceFilter} onValueChange={setDeviceFilter}>
+                    <SelectTrigger className="bg-white/50">
+                      <SelectValue placeholder="Todos os dispositivos" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos os dispositivos</SelectItem>
+                      <SelectItem value="smartphone">Smartphones</SelectItem>
+                      <SelectItem value="tv">TVs</SelectItem>
+                      <SelectItem value="computer">Computadores</SelectItem>
+                      <SelectItem value="other">Outros dispositivos</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center">
                     <Filter className="w-5 h-5 text-muted-foreground mr-2" />
-                    <span className="font-medium">Filtrar por tipo</span>
+                    <span className="font-medium">Filtrar por tipo de local</span>
                   </div>
                   <Select value={filter} onValueChange={setFilter}>
                     <SelectTrigger className="bg-white/50">
@@ -182,9 +238,18 @@ const Map = () => {
                           </Badge>
                         </div>
                         <p className="text-sm text-muted-foreground mb-2">{point.address}</p>
-                        <div className="flex items-center text-xs text-muted-foreground">
-                          <MapPin className="h-3 w-3 mr-1" />
-                          <span>{point.distance}</span>
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center text-xs text-muted-foreground">
+                            <MapPin className="h-3 w-3 mr-1" />
+                            <span>{point.distance}</span>
+                          </div>
+                          <div className="flex space-x-1">
+                            {point.accepts.map(device => (
+                              <span key={device} title={getDeviceLabel(device)} className="text-muted-foreground">
+                                {getDeviceIcon(device)}
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -224,7 +289,7 @@ const Map = () => {
                         <h3 className="text-2xl font-semibold">{selectedPoint.name}</h3>
                       </div>
                       
-                      <div className="space-y-3 mb-6">
+                      <div className="space-y-3 mb-4">
                         <div className="flex items-start">
                           <MapPin className="w-5 h-5 text-eco-green mr-3 mt-0.5 flex-shrink-0" />
                           <div>
@@ -247,6 +312,18 @@ const Map = () => {
                             <p className="font-medium">Telefone</p>
                             <p className="text-sm text-muted-foreground">{selectedPoint.phone}</p>
                           </div>
+                        </div>
+                      </div>
+                      
+                      <div className="mb-4">
+                        <p className="font-medium mb-2">Aceita os dispositivos:</p>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedPoint.accepts.map(device => (
+                            <Badge key={device} variant="outline" className="flex items-center gap-1 px-2 py-1">
+                              {getDeviceIcon(device)}
+                              <span>{getDeviceLabel(device)}</span>
+                            </Badge>
+                          ))}
                         </div>
                       </div>
                       
@@ -291,11 +368,11 @@ const Map = () => {
                   
                   <div className="flex flex-col items-center text-center">
                     <div className="w-12 h-12 rounded-full bg-eco-green/10 flex items-center justify-center mb-3">
-                      <Phone className="h-6 w-6 text-eco-green" />
+                      <Cpu className="h-6 w-6 text-eco-green" />
                     </div>
                     <h4 className="font-medium mb-2">Entregue</h4>
                     <p className="text-sm text-muted-foreground">
-                      Leve seu dispositivo para descarte responsável
+                      Leve seu dispositivo eletrônico para descarte responsável
                     </p>
                   </div>
                 </div>

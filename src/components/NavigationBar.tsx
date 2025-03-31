@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Smartphone, Map, Bell } from 'lucide-react';
+import { Home, Cpu, Map, Bell } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 export const NavigationBar = () => {
@@ -15,7 +15,7 @@ export const NavigationBar = () => {
         <div className="md:flex md:items-center md:justify-between">
           <div className="hidden md:block">
             <Link to="/" className="text-foreground font-medium text-lg">
-              <span className="text-eco-green">Eco</span>Phone
+              <span className="text-eco-green">Eco</span>Recicle
             </Link>
           </div>
           
@@ -38,7 +38,7 @@ export const NavigationBar = () => {
                   isActive('/register') ? "text-primary" : "text-muted-foreground"
                 )}
               >
-                <Smartphone size={20} className="mb-1 md:mb-0" />
+                <Cpu size={20} className="mb-1 md:mb-0" />
                 <span className="text-xs md:text-sm">Cadastrar</span>
               </Link>
             </li>
