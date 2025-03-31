@@ -6,9 +6,14 @@ import { CalendarClock } from 'lucide-react';
 interface DashboardNotificationProps {
   message: string;
   timestamp: string;
+  type?: 'register' | 'collect' | 'info';
 }
 
-const DashboardNotification = ({ message, timestamp }: DashboardNotificationProps) => {
+const DashboardNotification = ({ 
+  message, 
+  timestamp, 
+  type = 'info' 
+}: DashboardNotificationProps) => {
   // Formatação da data
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp);
@@ -19,11 +24,23 @@ const DashboardNotification = ({ message, timestamp }: DashboardNotificationProp
     }).format(date);
   };
 
+  // Define cores com base no tipo de notificação
+  const getBgColor = () => {
+    switch(type) {
+      case 'register':
+        return 'border-eco-green/30 bg-eco-green/10';
+      case 'collect':
+        return 'border-eco-blue/30 bg-eco-blue/10';
+      default:
+        return 'border-border bg-card/50';
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="p-3 rounded-lg border border-border bg-card/50"
+      className={`p-3 rounded-lg border ${getBgColor()}`}
     >
       <p className="text-sm">{message}</p>
       <div className="flex items-center mt-2 text-xs text-muted-foreground">
