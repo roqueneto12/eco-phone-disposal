@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -45,6 +44,7 @@ import {
   Cell
 } from 'recharts';
 import DashboardNotification from '@/components/DashboardNotification';
+import { useAuth } from '../contexts/AuthContext';
 
 // Tipo para dispositivo eletrônico
 interface ElectronicDevice {
@@ -84,6 +84,9 @@ const Index = () => {
     registered: number;
     collected: number;
   }>>([]);
+
+  // Obtém o objeto de autenticação
+  const { isAuthenticated } = useAuth();
 
   // Formulário para cadastro rápido
   const form = useForm({
@@ -149,6 +152,12 @@ const Index = () => {
   
   // Função para adicionar um novo dispositivo
   const registerDevice = (data: { deviceName: string; deviceType: string }) => {
+    // Verifica se o usuário está autenticado
+    if (!isAuthenticated()) {
+      toast.error("Você precisa estar logado para cadastrar dispositivos");
+      return;
+    }
+    
     const newDevice: ElectronicDevice = {
       id: Date.now().toString(),
       name: data.deviceName,
@@ -175,6 +184,12 @@ const Index = () => {
   
   // Função para coletar um dispositivo (simulação)
   const collectDevice = (id: string) => {
+    // Verifica se o usuário está autenticado
+    if (!isAuthenticated()) {
+      toast.error("Você precisa estar logado para coletar dispositivos");
+      return;
+    }
+    
     setDevices(prev => prev.map(device => {
       if (device.id === id) {
         const updated = {
@@ -222,50 +237,6 @@ const Index = () => {
         return <Cpu className="h-5 w-5" />;
     }
   };
-
-  // Simulação de registro e coleta automáticos
-  useEffect(() => {
-    // Adicionar um dispositivo automaticamente a cada 30 segundos
-    const registerInterval = setInterval(() => {
-      const deviceTypes = ['smartphone', 'tv', 'laptop', 'tablet', 'impressora'];
-      const randomType = deviceTypes[Math.floor(Math.random() * deviceTypes.length)];
-      const randomName = `${randomType.charAt(0).toUpperCase() + randomType.slice(1)} #${Math.floor(Math.random() * 1000)}`;
-      
-      const newDevice: ElectronicDevice = {
-        id: Date.now().toString(),
-        name: randomName,
-        type: randomType,
-        status: 'registered',
-        registeredAt: new Date().toISOString()
-      };
-      
-      setDevices(prev => [...prev, newDevice]);
-      
-      // Adicionar notificação
-      const newNotification = {
-        id: Date.now().toString(),
-        message: `Novo dispositivo registrado: ${randomName}`,
-        timestamp: new Date().toISOString(),
-        type: 'register' as const
-      };
-      
-      setNotifications(prev => [newNotification, ...prev].slice(0, 10));
-    }, 30000);
-    
-    // Coletar um dispositivo aleatório a cada 45 segundos
-    const collectInterval = setInterval(() => {
-      const registeredDevices = devices.filter(d => d.status === 'registered');
-      if (registeredDevices.length > 0) {
-        const randomIndex = Math.floor(Math.random() * registeredDevices.length);
-        collectDevice(registeredDevices[randomIndex].id);
-      }
-    }, 45000);
-    
-    return () => {
-      clearInterval(registerInterval);
-      clearInterval(collectInterval);
-    };
-  }, [devices]);
 
   return (
     <div className="min-h-screen flex flex-col">

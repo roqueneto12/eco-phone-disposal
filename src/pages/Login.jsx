@@ -29,26 +29,27 @@ const Login = () => {
       return;
     }
 
-    // Get users from localStorage
-    const users = JSON.parse(localStorage.getItem('ecoRecicleUsers') || '[]');
-    const user = users.find(u => u.email === email && u.password === password);
-
-    if (user) {
-      // Login successful
-      login(user);
+    // Simulating login API call
+    setTimeout(() => {
+      // Get users from localStorage
+      const users = JSON.parse(localStorage.getItem('ecoRecicleUsers') || '[]');
       
-      // Show success toast
-      toast({
-        title: "Login realizado com sucesso",
-        description: "Bem-vindo de volta!",
-      });
+      // Find user by email and password
+      const user = users.find(u => u.email === email && u.password === password);
       
-      navigate('/dashboard');
-    } else {
-      setError('Email ou senha incorretos');
-    }
-    
-    setIsLoading(false);
+      if (user) {
+        login(user);
+        toast({
+          title: "Login realizado com sucesso",
+          description: "Bem-vindo de volta!",
+        });
+        navigate('/dashboard');
+      } else {
+        setError('Email ou senha incorretos');
+      }
+      
+      setIsLoading(false);
+    }, 1000);
   };
 
   return (
@@ -61,11 +62,11 @@ const Login = () => {
           className="mb-8"
         >
           <div className="inline-block px-3 py-1 mb-4 bg-eco-blue/30 text-eco-dark rounded-full text-sm font-medium">
-            Entrar
+            Login
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-4">Faça login na sua conta</h1>
           <p className="text-muted-foreground max-w-2xl">
-            Entre com suas credenciais para acessar o dashboard e gerenciar os dispositivos.
+            Entre para acessar o painel e gerenciar seus dispositivos eletrônicos.
           </p>
         </motion.div>
 
@@ -73,7 +74,7 @@ const Login = () => {
           <CardHeader>
             <CardTitle>Login</CardTitle>
             <CardDescription>
-              Digite seu email e senha para entrar
+              Digite suas credenciais para acessar sua conta
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -99,17 +100,13 @@ const Login = () => {
               </div>
               
               <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <label htmlFor="password" className="text-sm font-medium">
-                    Senha
-                  </label>
-                  <a href="#" className="text-xs text-primary hover:underline">
-                    Esqueceu a senha?
-                  </a>
-                </div>
+                <label htmlFor="password" className="text-sm font-medium">
+                  Senha
+                </label>
                 <Input
                   id="password"
                   type="password"
+                  placeholder="Sua senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
