@@ -34,7 +34,7 @@
 .card {
   padding: 2em;
   border-radius: 1.5rem;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 15px 15px rgba(0, 0, 0, 0.1);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
   backdrop-filter: blur(10px);
   transition: all 0.4s ease;
@@ -58,7 +58,7 @@
 
 .card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 0 15px 12px rgba(0, 0, 0, 0.15);
   border-color: rgba(142, 204, 169, 0.4);
 }
 
@@ -120,3 +120,4 @@ nav a {
 nav a:hover {
   transform: translateY(-2px);
 }
+
