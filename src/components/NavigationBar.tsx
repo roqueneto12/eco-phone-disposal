@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Cpu, Map, Bell } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import Logo from './Logo';
 
 export const NavigationBar = () => {
   const location = useLocation();
@@ -14,8 +14,8 @@ export const NavigationBar = () => {
       <div className="container mx-auto max-w-7xl px-4 py-2">
         <div className="md:flex md:items-center md:justify-between">
           <div className="hidden md:block">
-            <Link to="/" className="text-foreground font-medium text-lg">
-              <span className="text-eco-green">Eco</span>Recicle
+            <Link to="/" className="text-foreground">
+              <Logo />
             </Link>
           </div>
           
